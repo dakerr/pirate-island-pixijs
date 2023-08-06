@@ -12,7 +12,7 @@ export const designConfig = {
   /** Enable to be able to see the collision bodies of the bubbles. */
   debugBody: false,
   /** Tile scale for the background elements found in each screen. */
-  backgroundTileScale: 2,
+  backgroundTileScale: 1,
   /** To prevent the background decor visuals from spawning too close to the sides of the screen. */
   decorEdgePadding: 100,
   /** To prevent the background decor visuals from spawning too close to one another. */
