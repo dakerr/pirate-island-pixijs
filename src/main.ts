@@ -58,17 +58,12 @@ async function init()
 
   // Show first screen - go straight to game if '?play' param is present in url
   // This is used for debugging
-  if (getUrlParam('play') !== null)
-  {
+  if (getUrlParam('play') !== null) {
     await Assets.loadBundle(TitleScreen.assetBundles);
     await navigation.goToScreen(GameScreen);
-  }
-  else if (getUrlParam('loading') !== null)
-  {
+  } else if (getUrlParam('loading') !== null) {
     await navigation.goToScreen(LoadScreen);
-  }
-  else
-  {
+  } else {
     await navigation.goToScreen(TitleScreen);
   }
 }
