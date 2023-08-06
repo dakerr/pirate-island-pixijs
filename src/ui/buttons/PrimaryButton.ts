@@ -46,12 +46,12 @@ export class PrimaryButton extends FancyButton {
       text,
       // Offset the button text
       textOffset: {
-          default: {
-              y: -30,
-          },
-          pressed: {
-              y: -15,
-          },
+        default: {
+          y: -30,
+        },
+        pressed: {
+          y: -15,
+        },
       },
       // Anchor to the center-bottom
       anchorX: 0.5,

@@ -1,9 +1,9 @@
 import gsap from 'gsap';
 import { Container, Rectangle, Texture, TilingSprite } from 'pixi.js';
 
-import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { designConfig } from '../game/designConfig';
 import { AppScreen, navigation } from '../navigation';
+import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { GameScreen } from './GameScreen';
 
 /** The screen presented at the start, after loading. */
@@ -54,11 +54,10 @@ export class TitleScreen extends Container implements AppScreen {
 
   /** Called before `show` function, can receive `data` */
   public prepare() {
-    console.log('preparing');
     // Reset the positions of the group containers
     gsap.set(this._topAnimContainer, { y: -350 });
-    gsap.set(this._midAnimContainer, {x: 200 });
-    gsap.set(this._bottomAnimContainer, {y: 350 });
+    gsap.set(this._midAnimContainer, { x: 200 });
+    gsap.set(this._bottomAnimContainer, { y: 350 });
   }
 
   /** Called when the screen is being shown. */
@@ -74,12 +73,12 @@ export class TitleScreen extends Container implements AppScreen {
 
     // The data to be used in the upcoming tweens
     const endData = {
-        x: 0,
-        y: 0,
-        duration: 0.75,
-        ease: 'elastic.out(1, 0.5)',
+      x: 0,
+      y: 0,
+      duration: 0.75,
+      ease: 'elastic.out(1, 0.5)',
     };
-    
+
     // Tween the containers back to their original position
     gsap.to(this._topAnimContainer, endData);
     gsap.to(this._midAnimContainer, endData);
@@ -109,7 +108,6 @@ export class TitleScreen extends Container implements AppScreen {
 
     this._bottomAnimContainer.addChild(this._playBtn);
   }
-
 
   /**
    * Gets called every time the screen resizes.

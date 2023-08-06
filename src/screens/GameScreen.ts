@@ -1,7 +1,7 @@
 import { Container, Texture, TilingSprite } from 'pixi.js';
 
-import type { AppScreen } from '../navigation';
 import { designConfig } from '../game/designConfig';
+import type { AppScreen } from '../navigation';
 
 /** The screen that contains all the gameplay */
 export class GameScreen extends Container implements AppScreen {

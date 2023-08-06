@@ -85,7 +85,7 @@
       "no-use-before-define": ["error", "nofunc"],
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
-      "brace-style": ["error", "allman"],
+      "brace-style": ["error", "1tbs"],
       "camelcase": ["error", { "properties": "always" }],
       "comma-spacing": ["error", { "before": false, "after": true }],
       "func-names": ["error", "always"],

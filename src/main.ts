@@ -13,8 +13,7 @@ export const app = new Application<HTMLCanvasElement>({
   backgroundColor: 0xffffff,
 });
 
-function resize()
-{
+function resize() {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
   const minWidth = designConfig.content.width;
@@ -39,8 +38,7 @@ function resize()
 }
 
 /** Setup app and initialise assets */
-async function init()
-{
+async function init() {
   // Add pixi canvas element (app.view) to the document's body
   document.body.appendChild(app.view);
 
