@@ -12,7 +12,8 @@
     "build": "yarn build-assets && tsc && vite build",
     "build-assets": "assetpack",
     "lint": "eslint --ext .js,.ts,.tsx src",
-    "format": "prettier --write src/**/*.{ts}"
+    "lint:fix": "eslint --ext .js,.ts,.tsx src --fix",
+    "format": "prettier --write src/**/*.ts"
   },
   "dependencies": {
     "@pixi/sound": "^5.0.0",
