@@ -32,7 +32,7 @@ export class TitleScreen extends Container implements AppScreen {
     super();
 
     // Create the background
-    this._background = new TilingSprite(Texture.from('background-tile'), 2520, 1080);
+    this._background = new TilingSprite(Texture.from('bg2'), 240, 240);
     this._background.tileScale.set(designConfig.backgroundTileScale);
     this._background.interactive = true;
     this.addChild(this._background);
