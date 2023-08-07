@@ -9,7 +9,7 @@ export class TestSystem implements System {
   public static SYSTEM_ID = 'test';
 
   public game!: Game;
-  public view = new Container;
+  public view = new Container();
   public readonly boatContainer = new Container();
   public boat!: Boat;
 

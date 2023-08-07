@@ -8,6 +8,7 @@ import { boardConfig } from './boardConfig';
 import { SystemRunner } from './SystemRunner';
 import { TestSystem } from './systems/TestSystem';
 import { TimerSystem } from './systems/TimerSystem';
+import { FobSystem } from './systems/FobSystem';
 // import { BoatSystem } from './systems/BoatSystem';
 // import { HudSystem } from './systems/HudSystem';
 
@@ -67,6 +68,7 @@ export class Game {
     // this.systems.add(BoatSystem);
     this.systems.add(TestSystem);
     this.systems.add(TimerSystem);
+    this.systems.add(FobSystem);
 
     this.systems.init();
   }

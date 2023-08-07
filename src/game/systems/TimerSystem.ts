@@ -1,4 +1,4 @@
-import { Container } from 'pixi.js';
+import { Container } from "pixi.js";
 
 import { Game } from '../Game';
 
@@ -7,7 +7,7 @@ export class TimerSystem {
    * A unique identifier used by the system runner.
    * The identifier is used by the runner to differentiate between different systems.
    */
-  public static SYSTEM_ID = 'hud';
+  public static SYSTEM_ID = 'timer';
   /**
    * The instance of the game the system is attached to.
    * This is automatically set by the system runner when the system is added to the game.
