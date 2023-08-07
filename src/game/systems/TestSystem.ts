@@ -1,9 +1,9 @@
 import gsap from 'gsap';
+import { Container } from 'pixi.js';
 
-import { Container } from "pixi.js";
-import { Game } from "../Game";
-import { System } from "../SystemRunner";
-import { Boat } from "../entities/Boat";
+import { Boat } from '../entities/Boat';
+import { Game } from '../Game';
+import { System } from '../SystemRunner';
 
 export class TestSystem implements System {
   public static SYSTEM_ID = 'test';
@@ -13,6 +13,9 @@ export class TestSystem implements System {
   public readonly boatContainer = new Container();
   public boat!: Boat;
 
+  private _left = false;
+  private _right = false;
+
   public init() {
     this.game.stage.addChild(this.view);
 
@@ -21,16 +24,27 @@ export class TestSystem implements System {
 
     this.boatContainer.addChild(this.boat.view);
     this.view.addChild(this.boatContainer);
-  
-    window.addEventListener('keydown', this._onKeyDown.bind(this));
-  
   }
 
   public awake() {
+    window.addEventListener('keydown', this._onKeyDown.bind(this));
+    window.addEventListener('keyup', this._onKeyUp.bind(this));
   }
 
   public end() {
     window.removeEventListener('keydown', this._onKeyDown.bind(this));
+    window.removeEventListener('keyup', this._onKeyUp.bind(this));
+  }
+
+  public update() {
+    if (this._right) {
+      gsap.to(this.boatContainer, {rotation: -0.1, ease: 'linear', duration: 0.1});
+      this.boatContainer.x += 5;
+    }
+    if (this._left) {
+      gsap.to(this.boatContainer, {rotation: 0.1, ease: 'linear', duration: 0.1});
+      this.boatContainer.x -= 5;
+    }
   }
 
   public resize(w: number, h: number) {
@@ -39,12 +53,20 @@ export class TestSystem implements System {
   }
 
   private _onKeyDown(evt: KeyboardEvent) {
-    if (evt.key === "ArrowRight") {
-      gsap.to(this.boatContainer, {rotation: -0.1, x: this.boatContainer.x += 10, ease: 'linear', duration: 0.1});
+    if (evt.key === 'ArrowRight') {
+      this._right = true;
     }
-    if (evt.key === "ArrowLeft") {
-      gsap.to(this.boatContainer, {rotation: 0.1, x: this.boatContainer.x -= 10, ease: 'linear', duration: 0.1});
+    if (evt.key === 'ArrowLeft') {
+      this._left = true;
     }
-    console.log(evt);
+  }
+
+  private _onKeyUp(evt: KeyboardEvent) {
+    if (evt.key === 'ArrowRight') {
+      this._right = false;
+    }
+    if (evt.key === 'ArrowLeft') {
+      this._left = false;
+    }
   }
 }

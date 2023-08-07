@@ -4,9 +4,10 @@ import { Container, Rectangle } from 'pixi.js';
 
 import { navigation } from '../navigation';
 import { ResultScreen } from '../screens/ResultScreen';
+import { boardConfig } from './boardConfig';
 import { SystemRunner } from './SystemRunner';
 import { TestSystem } from './systems/TestSystem';
-import { boardConfig } from './boardConfig';
+import { TimerSystem } from './systems/TimerSystem';
 // import { BoatSystem } from './systems/BoatSystem';
 // import { HudSystem } from './systems/HudSystem';
 
@@ -65,6 +66,7 @@ export class Game {
     // this.systems.add(HudSystem);
     // this.systems.add(BoatSystem);
     this.systems.add(TestSystem);
+    this.systems.add(TimerSystem);
 
     this.systems.init();
   }

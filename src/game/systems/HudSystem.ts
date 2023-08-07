@@ -49,7 +49,7 @@ export class HudSystem implements System {
     );
 
     this._gameHudContainer.addChild(
-      this.boatContainer
+      this.boatContainer,
     );
 
     // Designate the mask to the game hud
