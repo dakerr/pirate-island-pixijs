@@ -1,8 +1,9 @@
-import { Container } from "pixi.js";
+import { Container } from 'pixi.js';
 
 import { Game } from '../Game';
+import { System } from '../SystemRunner';
 
-export class TimerSystem {
+export class TimerSystem implements System {
   /**
    * A unique identifier used by the system runner.
    * The identifier is used by the runner to differentiate between different systems.

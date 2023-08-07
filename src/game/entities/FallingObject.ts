@@ -1,5 +1,6 @@
-import { Container, Sprite } from "pixi.js";
-import { Game } from "../Game";
+import { Container, Sprite } from 'pixi.js';
+
+import { Game } from '../Game';
 
 export const MAX_FALLING_OBJECT = 5;
 
@@ -18,6 +19,7 @@ export class FallingObject {
     this.fobType = this._randomTypePicker();
 
     const element = Sprite.from(this.fobType);
+
     element.anchor.set(0.5);
     
     
@@ -34,9 +36,11 @@ export class FallingObject {
   }
 
   private _randomTypePicker() {
-    let random: string[] = [];
+    const random: string[] = [];
+
     this._fobs.forEach((item, ndx) => {
-      let clone = Array(this._weight[ndx]).fill(item);
+      const clone = Array(this._weight[ndx]).fill(item);
+
       random.push(...clone);
     });
 

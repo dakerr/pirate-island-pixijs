@@ -6,9 +6,9 @@ import { navigation } from '../navigation';
 import { ResultScreen } from '../screens/ResultScreen';
 import { boardConfig } from './boardConfig';
 import { SystemRunner } from './SystemRunner';
+import { FobSystem } from './systems/FobSystem';
 import { TestSystem } from './systems/TestSystem';
 import { TimerSystem } from './systems/TimerSystem';
-import { FobSystem } from './systems/FobSystem';
 // import { BoatSystem } from './systems/BoatSystem';
 // import { HudSystem } from './systems/HudSystem';
 
