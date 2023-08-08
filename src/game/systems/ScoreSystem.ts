@@ -1,5 +1,5 @@
-import { Game } from '../Game';
-import { System } from '../SystemRunner';
+import { Game } from "../Game";
+import { System } from "../SystemRunner";
 
 export class ScoreSystem implements System {
   /**
@@ -13,5 +13,7 @@ export class ScoreSystem implements System {
    */
   public game!: Game;
 
-
+  public init() {
+    
+  }
 }

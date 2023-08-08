@@ -31,6 +31,7 @@ export class FobSystem implements System {
   private _movingRight = true;
   private _fobEntities: FallingObject[] = [];
   private _randoArray: number[] = Array.from(Array(Math.floor(100)).keys());
+  private _tempScore = 0;
 
   public init() {
     this.game.stage.addChild(this.view);
@@ -113,9 +114,19 @@ export class FobSystem implements System {
     lowEntities.forEach((item, index) => {
       if (this._collision(this._player, item.view)) {
         console.log('collision ', item.fobType);
+        this._setScore(item.fobType);
         this._removeFob(item, index);
       }
     });
+  }
+
+  private _setScore(type: string) {
+    if (type === 'e1' || type === 'e2') {
+      this._tempScore -= 100;
+    } else {
+      this._tempScore += 50;
+    }
+    console.log('current score', this._tempScore);
   }
 
   private _collision(player: Container, object: Container) {
