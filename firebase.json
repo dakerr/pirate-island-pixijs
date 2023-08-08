@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "pirate-island-pixijs",
     "public": "dist",
     "ignore": [
       "firebase.json",
