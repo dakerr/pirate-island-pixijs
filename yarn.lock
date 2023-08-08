@@ -3016,6 +3016,11 @@ pixi-filters@^5.1.1:
     "@pixi/filter-twist" "5.1.1"
     "@pixi/filter-zoom-blur" "5.1.1"
 
+pixi-text-input@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/pixi-text-input/-/pixi-text-input-1.0.6.tgz#d826de4f2d1db9da3dc59fcdf7e4c2c755e3ac57"
+  integrity sha512-R2tiJd7XL3nMCIuF0lJBIJFDBry+Iv+hHg8anzcAPPOcWQrwvibKfskY2WrT8SQpvQDMeWoMwHDrbitNJcH13g==
+
 pixi.js@^7.1.2:
   version "7.2.4"
   resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-7.2.4.tgz#4cd6776bf7f74a6c5e121dd1b59329e66be2ce49"

@@ -6,6 +6,7 @@ import { navigation } from './navigation';
 import { GameScreen } from './screens/GameScreen';
 import { LoadScreen } from './screens/LoadScreen';
 import { TitleScreen } from './screens/TitleScreen';
+import { ResultScreen } from './screens/ResultScreen';
 import { getUrlParam } from './utils/utils';
 
 export const app = new Application<HTMLCanvasElement>({
@@ -61,6 +62,8 @@ async function init() {
     await navigation.goToScreen(GameScreen);
   } else if (getUrlParam('loading') !== null) {
     await navigation.goToScreen(LoadScreen);
+  } else if (getUrlParam('results') !== null) {
+    await navigation.goToScreen(ResultScreen);
   } else {
     await navigation.goToScreen(TitleScreen);
   }

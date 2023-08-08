@@ -120,6 +120,6 @@ export class TitleScreen extends Container implements AppScreen {
     this._background.height = h;
 
     this._playBtn.x = w * 0.5;
-    this._playBtn.y = 145;
+    this._playBtn.y = h * 0.5;
   }
 }

@@ -9,6 +9,7 @@ import { SystemRunner } from './SystemRunner';
 import { FobSystem } from './systems/FobSystem';
 import { TestSystem } from './systems/TestSystem';
 import { TimerSystem } from './systems/TimerSystem';
+import { Stats } from './Stats';
 // import { BoatSystem } from './systems/BoatSystem';
 // import { HudSystem } from './systems/HudSystem';
 
@@ -22,6 +23,8 @@ export class Game {
   public hitContainer = new Container();
   /** A system manager to handle the common functions found in systems. */
   public systems: SystemRunner;
+  /** A class that deals with user specific stats. */
+  public stats: Stats;
   /** A flag to determine if the game has reached the "GAMEOVER" state */
   public isGameOver = false;
 
@@ -40,6 +43,8 @@ export class Game {
 
     // Instantiate system runner and pass `this`
     this.systems = new SystemRunner(this);
+
+    this.stats = new Stats();
   }
 
   /**
@@ -91,7 +96,11 @@ export class Game {
     gsap.delayedCall(1, () => {
       // Navigate to the ResultScreen after a 1 second delay
       // Send all relevant user stats
-      navigation.goToScreen(ResultScreen, {});
+      navigation.goToScreen(ResultScreen, {
+        score: this.stats.get('score'),
+        caught: this.stats.get('objectsCaught'),
+        highscore: this.stats.get('highscore'),
+      });
     });
   }
 

@@ -14,6 +14,12 @@ export class ScoreSystem implements System {
   public game!: Game;
 
   public init() {
+   
     
+    // connect onScore signal from FobSystem to score logic
+
+      // get the TestSystem, update the displayed score
+
+      // debounce the update, then if high score, update the storage
   }
 }
