@@ -4,7 +4,6 @@ import { Game } from '../Game';
 
 export const MAX_FALLING_OBJECT = 5;
 
-
 export class FallingObject {
 
   public game!: Game;
@@ -17,18 +16,14 @@ export class FallingObject {
   public init(x: number, y: number) {
     // randomly choose a type
     this.fobType = this._randomTypePicker();
-
     const element = Sprite.from(this.fobType);
 
     element.anchor.set(0.5);
-    
     
     this.view.addChild(element);
     this.view.scale.set(0.2);
     this.view.x = x;
     this.view.y = y;
-
-    console.log(x, y, this.fobType);
   }
 
   public updatePositionY() {

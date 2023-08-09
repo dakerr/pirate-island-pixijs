@@ -18,8 +18,8 @@ export class ScoreSystem implements System {
     
     // connect onScore signal from FobSystem to score logic
 
-      // get the TestSystem, update the displayed score
+    // get the TestSystem, update the displayed score
 
-      // debounce the update, then if high score, update the storage
+    // debounce the update, then if high score, update the storage
   }
 }

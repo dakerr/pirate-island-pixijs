@@ -47,6 +47,5 @@ export class BoatSystem implements System {
   public start() {
     this.boat.view.x = 0;
     this.boat.view.y = 0;
-    console.log('boat', this.boat.view.getGlobalPosition());
   }
 }

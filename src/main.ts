@@ -5,8 +5,8 @@ import { designConfig } from './game/designConfig';
 import { navigation } from './navigation';
 import { GameScreen } from './screens/GameScreen';
 import { LoadScreen } from './screens/LoadScreen';
-import { TitleScreen } from './screens/TitleScreen';
 import { ResultScreen } from './screens/ResultScreen';
+import { TitleScreen } from './screens/TitleScreen';
 import { getUrlParam } from './utils/utils';
 
 export const app = new Application<HTMLCanvasElement>({

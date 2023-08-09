@@ -23,7 +23,7 @@ export class TimerSystem implements System {
   private _duration = 60 * 60;
 
   public init() {
-    console.log('init timer');
+    // setup timer text
   }
 
   public awake() {
@@ -36,7 +36,6 @@ export class TimerSystem implements System {
     }
 
     if (this._time > this._duration) {
-      console.log('Game over');
       this.game.gameOver();
     }
   }

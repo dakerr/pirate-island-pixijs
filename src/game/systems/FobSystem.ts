@@ -40,12 +40,9 @@ export class FobSystem implements System {
     this._player = this.game.systems.get(TestSystem).boatContainer;
   }
 
-
   public awake() {
-    console.log('awake', this._width, this._height);
     this._dropper.position = {x: 0, y: -200};
-    console.log('dropper', this._dropper.getGlobalPosition());
-
+    this._dropper.visible = false;
   }
 
   public update(delta: number) {
@@ -54,13 +51,16 @@ export class FobSystem implements System {
     this._testForCollision();
   }
 
+  public reset() {
+    this._removeAllFobs();
+  }
+
   public resize(w: number, h: number) {
     this.view.x = w * 0.5;
     this.view.y = 120;
 
     this._width = w;
     this._height = h;
-    console.log('resize', this._width, this._height);
   }
 
   private _updateDropper() {
@@ -103,21 +103,21 @@ export class FobSystem implements System {
     pool.return(item);
     item.view.removeFromParent();
     this._fobEntities = this._fobEntities.filter((_, i) => i !== index);
-    console.log('removed', item.fobType, item.view.x, this._fobEntities.length);
+  }
+
+  private _removeAllFobs() {
+    this._fobEntities.forEach(item => {
+      item.view.removeFromParent();
+      pool.return(item);
+    });
+    this._fobEntities = [];
   }
 
   private _testForCollision() {
     const lowEntities = this._fobEntities.filter(x => x.view.y > this._height - 200);
 
-
     lowEntities.forEach((item, index) => {
       if (this._collision(this._player, item.view)) {
-        console.log('collision ', item.fobType);
-
-
-        // emit a score event 
-
-
         this._setScore(item.fobType);
         this._removeFob(item, index);
       }
@@ -144,7 +144,6 @@ export class FobSystem implements System {
   }
 
   private _createFallingObject() {
-
     // max entities on screen?
     if (this._fobEntities.length < MAX_FALLING_OBJECT) {
       const dropperPos = this._dropper.getGlobalPosition();
@@ -154,8 +153,6 @@ export class FobSystem implements System {
       this._fobEntities.push(fob);
 
       this.game.stage.addChild(fob.view);
-
-      console.log('created', fob.fobType, fob.view.x, this._fobEntities.length);
     }
   }
 }

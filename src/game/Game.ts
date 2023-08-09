@@ -2,14 +2,15 @@ import gsap from 'gsap';
 import type { DisplayObject } from 'pixi.js';
 import { Container, Rectangle } from 'pixi.js';
 
+import { authenticateAnonymously, FirestoreConfig } from '../firestore';
 import { navigation } from '../navigation';
 import { ResultScreen } from '../screens/ResultScreen';
 import { boardConfig } from './boardConfig';
+import { Stats } from './Stats';
 import { SystemRunner } from './SystemRunner';
 import { FobSystem } from './systems/FobSystem';
 import { TestSystem } from './systems/TestSystem';
 import { TimerSystem } from './systems/TimerSystem';
-import { Stats } from './Stats';
 // import { BoatSystem } from './systems/BoatSystem';
 // import { HudSystem } from './systems/HudSystem';
 
@@ -27,6 +28,11 @@ export class Game {
   public stats: Stats;
   /** A flag to determine if the game has reached the "GAMEOVER" state */
   public isGameOver = false;
+  /** The user id for the firestore database */
+  public firestoreConfig: FirestoreConfig = {
+    userId: '',
+    docRef: '',
+  };
 
   /** The hit area to be used by the `hitContainer`. */
   private readonly _hitArea: Rectangle;
@@ -82,6 +88,15 @@ export class Game {
   public async awake() {
     this.systems.awake();
     this.gameContainer.visible = true;
+
+    // connect to the firestore
+    const firestoreUser = await authenticateAnonymously();
+
+    // add the firestore document reference for the scoreboard
+    Object.assign(this.firestoreConfig, {
+      userId: firestoreUser.user.uid,
+      docRef: 'gVnOkIA68OF0zpu8f2IA',
+    });
   }
 
   /** Starts the game logic. */
@@ -100,6 +115,7 @@ export class Game {
         score: this.stats.get('score'),
         caught: this.stats.get('objectsCaught'),
         highscore: this.stats.get('highscore'),
+        config: this.firestoreConfig,
       });
     });
   }
@@ -123,6 +139,7 @@ export class Game {
   /** Resets the game to its initial state. */
   public reset() {
     this.isGameOver = false;
+    this.stats.reset();
     this.systems.reset();
   }
 

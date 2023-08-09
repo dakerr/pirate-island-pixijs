@@ -1,7 +1,8 @@
-import gsap from 'gsap';
-import { Container, Texture, TilingSprite, Sprite, Text } from 'pixi.js';
 import { Input } from '@pixi/ui';
+import gsap from 'gsap';
+import { Container, Sprite, Text, Texture, TilingSprite } from 'pixi.js';
 
+import { addScoreboardItem, FirestoreConfig } from '../firestore';
 import { designConfig } from '../game/designConfig';
 import { AppScreen, navigation } from '../navigation';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
@@ -11,6 +12,7 @@ export interface ResultsData {
   score: number;
   caught: number;
   highscore: number;
+  config: FirestoreConfig;
 }
 
 export class ResultScreen extends Container implements AppScreen {
@@ -22,8 +24,9 @@ export class ResultScreen extends Container implements AppScreen {
   private _background: TilingSprite;
   private _playBtn!: PrimaryButton;
   private _playerInput!: Input;
-  // private _results!: ResultsData;
-  private _resultsView!: Container;
+  private _resultsView: Container = new Container();
+  private _scoreText!: Text;
+  private _results!: ResultsData;
 
   constructor() {
     super();
@@ -33,6 +36,8 @@ export class ResultScreen extends Container implements AppScreen {
     this._background.tileScale.set(designConfig.backgroundTileScale);
     this._background.interactive = true;
     this.addChild(this._background);
+
+    this._clearResults();
 
     this._buildButtons();
 
@@ -44,18 +49,22 @@ export class ResultScreen extends Container implements AppScreen {
    * @param data - An object containing data specific to this screen.
    */
   public prepare(data: ResultsData) {
-    this._buildResultsText(data);
+    this._buildResultsText(data.score);
+    this._updateResultsData(data);
   }
 
   /** Called when the screen is being shown. */
   public async show() {
     // Kill tweens of the screen container
     gsap.killTweensOf(this);
-    
+
     this.alpha = 0;
 
     // Tween screen into being visible
     await gsap.to(this, { alpha: 1, duration: 0.2, ease: 'linear' });
+
+    // this was hidden after accepting input
+    this._playerInput.visible = true;
   }
 
   /** Called when the screen is being hidden. */
@@ -65,6 +74,8 @@ export class ResultScreen extends Container implements AppScreen {
 
     // Tween screen into being invisible
     await gsap.to(this, { alpha: 0, duration: 0.2, ease: 'linear' });
+
+    this._resultsView.removeChild(this._scoreText);
   }
 
   /**
@@ -85,28 +96,44 @@ export class ResultScreen extends Container implements AppScreen {
 
     this._playBtn.x = w * 0.5;
     this._playBtn.y = this._playerInput.y + this._resultsView.height + 200;
-
   }
 
-  private _buildResultsText(data: ResultsData) {
-    const score = new Text(`Score: ${(data) ? data.score : 0}`, {
+  private _updateResultsData(data: ResultsData) {
+    this._results.score = data.score;
+    this._results.caught = data.caught;
+    this._results.highscore = data.highscore;
+    this._results.config.userId = data.config.userId;
+    this._results.config.docRef = data.config.docRef;
+  }
+
+  private _buildResultsText(score: number) {
+    this._scoreText = new Text(`Score: ${score}`, {
       fontFamily: 'PirateJack lglRX',
       fontSize: 70,
       align: 'center',
-      fill: 'white'
+      fill: 'white',
     });
-    // this._results = data;
-
-    this._resultsView = new Container();
-    this._resultsView.addChild(score);
-    this._resultsView.pivot.x = this._resultsView.width/2;
-    this._resultsView.pivot.y = this._resultsView.height/2;
+    this._resultsView.addChild(this._scoreText);
+    this._resultsView.pivot.x = this._resultsView.width / 2;
+    this._resultsView.pivot.y = this._resultsView.height / 2;
     this.addChild(this._resultsView);
+  }
+
+  private _clearResults() {
+    this._results = {
+      score: 0,
+      caught: 0,
+      highscore: 0,
+      config: {
+        userId: '',
+        docRef: '',
+      },
+    };
   }
 
   private _buildButtons() {
     this._playBtn = new PrimaryButton({
-      text: 'Play Again?'
+      text: 'Play Again?',
     });
 
     this._playBtn.onPress.connect(() => {
@@ -123,17 +150,31 @@ export class ResultScreen extends Container implements AppScreen {
       bg,
       placeholder: 'Enter name',
       textStyle: {
-        fill: 0x49C8FF,
+        fill: 0x49c8ff,
         fontFamily: 'PirateJack lglRX',
         fontWeight: 'normal',
       },
       padding: 0,
-      align: 'center'
+      align: 'center',
     });
-    this._playerInput.pivot.x = this._playerInput.width/2;
-    this._playerInput.pivot.y = this._playerInput.height/2;
+    this._playerInput.pivot.x = this._playerInput.width / 2;
+    this._playerInput.pivot.y = this._playerInput.height / 2;
     this._playerInput.scale.set(1.5);
-    this._playerInput.onEnter.connect((val) => { console.log(val)});
+    this._playerInput.onEnter.connect((val) => {
+      if (this._results.config.userId && val.length > 0) {
+        addScoreboardItem(
+          {
+            name: val,
+            score: this._results.score,
+          },
+          this._results.config.docRef,
+          this._results.config.userId,
+        );
+        // clear the name before the next game
+        this._playerInput.value = '';
+        this._playerInput.visible = false;
+      }
+    });
     this.addChild(this._playerInput);
   }
 }

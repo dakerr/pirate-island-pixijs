@@ -67,11 +67,6 @@ export class HudSystem implements System {
     this._gameHudContainer.visible = true;
   }
 
-  public start() {
-    // not displayed popup
-    console.log('hud', this.game.systems.get(BoatSystem).boat.view.getGlobalPosition());
-  }
-
   public resize(w: number, h: number) {
     this.view.x = w * 0.5;
     this.view.y = h;
