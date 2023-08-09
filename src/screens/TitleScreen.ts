@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import { Container, Rectangle, Texture, TilingSprite } from 'pixi.js';
+import { Container, Rectangle, Text, Texture, TilingSprite } from 'pixi.js';
 
 import { designConfig } from '../game/designConfig';
 import { AppScreen, navigation } from '../navigation';
@@ -21,6 +21,8 @@ export class TitleScreen extends Container implements AppScreen {
   private readonly _background: TilingSprite;
 
   private _playBtn!: PrimaryButton;
+  /** A text element for the title */
+  private _title!: Text;
 
   private _topAnimContainer = new Container();
   /** A container to group visual elements for easier animation */
@@ -44,6 +46,7 @@ export class TitleScreen extends Container implements AppScreen {
     this._hitContainer.interactive = true;
     this._hitContainer.hitArea = this._hitArea;
     this.addChild(this._hitContainer);
+
 
     // Add buttons like the play button and audio button
     this._buildButtons();
@@ -101,11 +104,25 @@ export class TitleScreen extends Container implements AppScreen {
     this._playBtn = new PrimaryButton({
       text: 'Play',
     });
-
     this._playBtn.onPress.connect(() => {
       navigation.goToScreen(GameScreen);
     });
 
+    this._title = new Text('Pirate Island!', {
+      fontFamily: 'PirateJack lglRX',
+      fontSize: 140,
+      align: 'center',
+      fill: 0x49C8FF,
+      dropShadow: true,
+      dropShadowBlur: 10,
+      dropShadowAlpha: 0.5,
+      dropShadowColor: 'white'
+    });
+    this._title.pivot.x = this._title.width/2;
+    this._title.pivot.y = this._title.height/2;
+
+
+    this._topAnimContainer.addChild(this._title);
     this._bottomAnimContainer.addChild(this._playBtn);
   }
 
@@ -121,5 +138,8 @@ export class TitleScreen extends Container implements AppScreen {
 
     this._playBtn.x = w * 0.5;
     this._playBtn.y = h * 0.5;
+
+    this._title.x = w * 0.5;
+    this._title.y = 150;
   }
 }
