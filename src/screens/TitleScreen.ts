@@ -5,6 +5,7 @@ import { designConfig } from '../game/designConfig';
 import { AppScreen, navigation } from '../navigation';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { GameScreen } from './GameScreen';
+import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 
 /** The screen presented at the start, after loading. */
 export class TitleScreen extends Container implements AppScreen {
@@ -23,6 +24,8 @@ export class TitleScreen extends Container implements AppScreen {
   private _playBtn!: PrimaryButton;
   /** A text element for the title */
   private _title!: Text;
+  /** A button to navigate to highscore board */
+  private _scoreboardBtn!: SecondaryButton;
 
   private _topAnimContainer = new Container();
   /** A container to group visual elements for easier animation */
@@ -46,7 +49,6 @@ export class TitleScreen extends Container implements AppScreen {
     this._hitContainer.interactive = true;
     this._hitContainer.hitArea = this._hitArea;
     this.addChild(this._hitContainer);
-
 
     // Add buttons like the play button and audio button
     this._buildButtons();
@@ -101,6 +103,18 @@ export class TitleScreen extends Container implements AppScreen {
 
   /** Add buttons to screen. */
   private _buildButtons() {
+    this._title = new Text('Pirate Island!', {
+      fontFamily: 'PirateJack lglRX',
+      fontSize: 140,
+      align: 'center',
+      fill: 0x49c8ff,
+      dropShadow: true,
+      dropShadowBlur: 10,
+      dropShadowAlpha: 0.5,
+      dropShadowColor: 'white',
+    });
+    this._title.anchor.set(0.5);
+
     this._playBtn = new PrimaryButton({
       text: 'Play',
     });
@@ -108,22 +122,18 @@ export class TitleScreen extends Container implements AppScreen {
       navigation.goToScreen(GameScreen);
     });
 
-    this._title = new Text('Pirate Island!', {
-      fontFamily: 'PirateJack lglRX',
-      fontSize: 140,
-      align: 'center',
-      fill: 0x49C8FF,
-      dropShadow: true,
-      dropShadowBlur: 10,
-      dropShadowAlpha: 0.5,
-      dropShadowColor: 'white'
-    });
-    this._title.pivot.x = this._title.width/2;
-    this._title.pivot.y = this._title.height/2;
-
+    this._scoreboardBtn = new SecondaryButton({
+      text: 'High Scores!',
+      tint: 0x49c8ff
+    })
+    this._scoreboardBtn.onPress.connect(() => {
+      const url = import.meta.url.match(/(localhost)/) ? 'http://localhost:3000' : 'https://pirate-island-28a0e.firebaseapp.com/';
+      window.open(url);
+    })
 
     this._topAnimContainer.addChild(this._title);
-    this._bottomAnimContainer.addChild(this._playBtn);
+    this._midAnimContainer.addChild(this._playBtn);
+    this._bottomAnimContainer.addChild(this._scoreboardBtn);
   }
 
   /**
@@ -136,10 +146,13 @@ export class TitleScreen extends Container implements AppScreen {
     this._background.width = w;
     this._background.height = h;
 
+    this._title.x = w * 0.5;
+    this._title.y = 150;
+
     this._playBtn.x = w * 0.5;
     this._playBtn.y = h * 0.5;
 
-    this._title.x = w * 0.5;
-    this._title.y = 150;
+    this._scoreboardBtn.x = this._playBtn.x;
+    this._scoreboardBtn.y = this._playBtn.y + 200;
   }
 }
