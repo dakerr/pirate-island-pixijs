@@ -6,6 +6,7 @@ import { Game } from '../game/Game';
 import { TimerSystem } from '../game/systems/TimerSystem';
 import type { AppScreen } from '../navigation';
 import { GameTimer } from '../ui/GameTimer';
+import { GameScore } from '../ui/GameScore';
 
 /** The screen that contains all the gameplay */
 export class GameScreen extends Container implements AppScreen {
@@ -15,6 +16,7 @@ export class GameScreen extends Container implements AppScreen {
   public static assetBundles = ['images/game-screen'];
 
   public readonly timer: GameTimer;
+  public readonly score: GameScore;
 
   private readonly _background: TilingSprite;
   private readonly _game: Game;
@@ -33,6 +35,9 @@ export class GameScreen extends Container implements AppScreen {
 
     this.timer = new GameTimer();
     this.addChild(this.timer);
+
+    this.score = new GameScore();
+    this.addChild(this.score);
   }
 
   public async show() {
@@ -58,6 +63,8 @@ export class GameScreen extends Container implements AppScreen {
     if (remaining >= 0) {
       this.timer.updateTime(remaining);
     }
+
+    this.score.updateScore(this._game.stats.get('score'));
   }
 
   public resize(w: number, h: number) {
@@ -68,5 +75,8 @@ export class GameScreen extends Container implements AppScreen {
 
     this.timer.x = 10;
     this.timer.y = 10;
+
+    this.score.x = w - this.score.width - 50;
+    this.score.y = 10;
   }
 }

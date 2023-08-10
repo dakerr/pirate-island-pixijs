@@ -1,7 +1,7 @@
 import { Container, Text } from 'pixi.js';
 
 export class GameTimer extends Container {
-  private readonly _time: Text;
+  private readonly _time:Text;
 
   constructor() {
     super();
@@ -14,13 +14,13 @@ export class GameTimer extends Container {
       dropShadow: true,
       dropShadowBlur: 10,
       dropShadowAlpha: 0.5,
-      dropShadowColor: 'white',
+      dropShadowColor: 'white',     
     });
     this.addChild(this._time);
   }
 
   public updateTime(remaining: number) {
-    const seconds = Math.abs(Math.floor(remaining / 60) % 60);
+    const seconds = Math.floor(remaining/60) % 60;
 
     this._time.text = String(seconds).padStart(2, '0');
   }

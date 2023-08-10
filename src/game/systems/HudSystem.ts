@@ -1,77 +1,72 @@
-import { Container, Graphics, NineSlicePlane, Texture } from 'pixi.js';
+import gsap from 'gsap';
+import { Container } from 'pixi.js';
 
-import { designConfig } from '../designConfig';
+import { Boat } from '../entities/Boat';
 import { Game } from '../Game';
-import type { System } from '../SystemRunner';
-import { BoatSystem } from './BoatSystem';
+import { System } from '../SystemRunner';
 
-export class HudSystem implements System {
-  /**
-   * A unique identifier used by the system runner.
-   * The identifier is used by the runner to differentiate between different systems.
-   */
-  public static SYSTEM_ID = 'hud';
-  /**
-   * The instance of the game the system is attached to.
-   * This is automatically set by the system runner when the system is added to the game.
-   */
+export class TestSystem implements System {
+  public static SYSTEM_ID = 'test';
+
   public game!: Game;
-  /* The container instance that is the root of all visuals in this class. */
   public view = new Container();
-  /* The container instance that is used by the boat system to add the boat. */
   public readonly boatContainer = new Container();
+  public boat!: Boat;
 
-  /** The container that hold all of the game hud. */
-  private readonly _gameHudContainer = new Container();
+  private _left = false;
+  private _right = false;
 
-  private _leftBorder!: NineSlicePlane;
-
-  /** The mask is used to keep visual elements from rendering outside of the given game bounds */
-  private _mask!: Graphics;
-
-  /** Called when the system is added to the game. */
   public init() {
-    this.view.addChild(this._gameHudContainer);
     this.game.stage.addChild(this.view);
 
-    // left test
-    this._leftBorder = new NineSlicePlane(Texture.from('game-side-border'));
-    this._leftBorder.x = -(designConfig.content.width * 0.5) - this._leftBorder.width;
+    this.boat = new Boat();
+    this.boat.view.scale.set(0.25);
 
-    // right test
-
-    this._mask = new Graphics()
-      .beginFill(0xff0320)
-      .drawRect(
-        -designConfig.content.width * 0.5,
-        -designConfig.content.height,
-        designConfig.content.width,
-        designConfig.content.height,
-      );
-
-    this._gameHudContainer.addChild(this.boatContainer);
-
-    // Designate the mask to the game hud
-    this._gameHudContainer.mask = this._mask;
-
-    // Connect to the boat system
-    this.game.systems.get(BoatSystem).signals.onBoatMove.connect((isFirst) => {
-      if (isFirst) {
-        // On first move, hide popouts, start dropping
-      }
-    });
+    this.boatContainer.addChild(this.boat.view);
+    this.view.addChild(this.boatContainer);
   }
 
   public awake() {
-    this._gameHudContainer.visible = true;
+    window.addEventListener('keydown', this._onKeyDown.bind(this));
+    window.addEventListener('keyup', this._onKeyUp.bind(this));
+  }
+
+  public end() {
+    window.removeEventListener('keydown', this._onKeyDown.bind(this));
+    window.removeEventListener('keyup', this._onKeyUp.bind(this));
+  }
+
+  public update() {
+    if (this._right) {
+      gsap.to(this.boatContainer, { rotation: -0.1, ease: 'linear', duration: 0.1 });
+      this.boatContainer.x += 5;
+    }
+    if (this._left) {
+      gsap.to(this.boatContainer, { rotation: 0.1, ease: 'linear', duration: 0.1 });
+      this.boatContainer.x -= 5;
+    }
   }
 
   public resize(w: number, h: number) {
     this.view.x = w * 0.5;
-    this.view.y = h;
+    this.view.y = h - 120;
+  }
 
-    // Set the left visual wall to the left boundary
-    this._leftBorder.y = -h;
-    this._leftBorder.height = h;
+  private _onKeyDown(evt: KeyboardEvent) {
+    if (evt.key === 'ArrowRight') {
+      this._right = true;
+    }
+    if (evt.key === 'ArrowLeft') {
+      this._left = true;
+    }
+  }
+
+  private _onKeyUp(evt: KeyboardEvent) {
+    if (evt.key === 'ArrowRight') {
+      this._right = false;
+    }
+    if (evt.key === 'ArrowLeft') {
+      this._left = false;
+    }
   }
 }

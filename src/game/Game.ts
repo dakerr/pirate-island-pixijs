@@ -9,7 +9,7 @@ import { boardConfig } from './boardConfig';
 import { Stats } from './Stats';
 import { SystemRunner } from './SystemRunner';
 import { FobSystem } from './systems/FobSystem';
-import { TestSystem } from './systems/TestSystem';
+import { TestSystem } from './systems/HudSystem';
 import { TimerSystem } from './systems/TimerSystem';
 // import { BoatSystem } from './systems/BoatSystem';
 // import { HudSystem } from './systems/HudSystem';

@@ -4,7 +4,7 @@ import { FallingObject, MAX_FALLING_OBJECT } from '../entities/FallingObject';
 import { Game } from '../Game';
 import { pool } from '../Pool';
 import { System } from '../SystemRunner';
-import { TestSystem } from './TestSystem';
+import { TestSystem } from './HudSystem';
 
 export class FobSystem implements System {
   /**
