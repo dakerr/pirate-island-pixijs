@@ -15,6 +15,8 @@ export interface ResultsData {
   config: FirestoreConfig;
 }
 
+const INPUT_PROMPT = 'Add your name to the scoreboard!';
+
 export class ResultScreen extends Container implements AppScreen {
   /** A unique identifier for the screen. */
   public static SCREEN_ID = 'result';
@@ -24,6 +26,7 @@ export class ResultScreen extends Container implements AppScreen {
   private _background: TilingSprite;
   private _playBtn!: PrimaryButton;
   private _playerInput!: Input;
+  private _inputLabel!: Text;
   private _resultsView: Container = new Container();
   private _scoreText!: Text;
   private _results!: ResultsData;
@@ -39,6 +42,7 @@ export class ResultScreen extends Container implements AppScreen {
 
     this._clearResults();
 
+    this._buildInputLabel();
     this._buildButtons();
 
     this._buildInput();
@@ -65,6 +69,8 @@ export class ResultScreen extends Container implements AppScreen {
 
     // this was hidden after accepting input
     this._playerInput.visible = true;
+    this._playerInput.interactive = true;
+    this._inputLabel.text = INPUT_PROMPT;
   }
 
   /** Called when the screen is being hidden. */
@@ -91,19 +97,24 @@ export class ResultScreen extends Container implements AppScreen {
     this._resultsView.x = w * 0.5;
     this._resultsView.y = h * 0.4;
 
+    this._inputLabel.x = w * 0.5;
+    this._inputLabel.y = h * 0.5 - 10;
+
     this._playerInput.x = w * 0.5;
-    this._playerInput.y = this._resultsView.y + 100;
+    this._playerInput.y = this._resultsView.y + 150;
 
     this._playBtn.x = w * 0.5;
-    this._playBtn.y = this._playerInput.y + this._resultsView.height + 200;
+    this._playBtn.y = this._playerInput.y + this._resultsView.height + 150;
   }
 
   private _updateResultsData(data: ResultsData) {
-    this._results.score = data.score;
-    this._results.caught = data.caught;
-    this._results.highscore = data.highscore;
-    this._results.config.userId = data.config.userId;
-    this._results.config.docRef = data.config.docRef;
+    if (data) {
+      this._results.score = data.score;
+      this._results.caught = data.caught;
+      this._results.highscore = data.highscore;
+      this._results.config.userId = data.config.userId;
+      this._results.config.docRef = data.config.docRef;
+    }
   }
 
   private _buildResultsText(score: number) {
@@ -143,6 +154,19 @@ export class ResultScreen extends Container implements AppScreen {
     this.addChild(this._playBtn);
   }
 
+  private _buildInputLabel() {
+    const label = INPUT_PROMPT;
+
+    this._inputLabel = new Text(label, {
+      fontFamily: 'PirateJack lglRX',
+      fontSize: 30,
+      align: 'center',
+      fill: 'white',
+    });
+    this._inputLabel.anchor.set(0.5);
+    this.addChild(this._inputLabel);
+  }
+
   private _buildInput() {
     const bg = Sprite.from('info-bg');
 
@@ -173,6 +197,8 @@ export class ResultScreen extends Container implements AppScreen {
         // clear the name before the next game
         this._playerInput.value = '';
         this._playerInput.visible = false;
+        this._playerInput.interactive = false;
+        this._inputLabel.text = 'Thank-you!';
       }
     });
     this.addChild(this._playerInput);
