@@ -25,7 +25,16 @@ Other neat stuff in this project:
 This simple game demonstrates how data could be sent to a separate app, and displayed in real-time.
 
 ## How?
-Both apps (and potentially many others) are connected to the same cloud based database - the NoSQL Firestore Database.  The second app (here) consumes the data in a stream using a React hook and updates the table in real-time!
+Both apps (and potentially many others) are connected to the same cloud based database - the NoSQL Firestore Database.  The second app [here](https://github.com/dakerr/pirate-island-scoreboard) consumes the data in a stream using a React hook and updates the table in real-time!
+
+## Firestore APIs used
+- initializeApp
+- getFirestore
+- getAuth
+- signInAnonymously
+- collection
+- addDoc
+- serverTimestamp
 
 ## Prerequisites
 This project needs `Node.js` and `Yarn` installed on your system.
@@ -50,6 +59,10 @@ yarn start
 # Assetpack bundles, tsc compiles and vite builds for production.  Output to /dist
 yarn build
 ```
+
+## Demo!
+Deployed to Firebase Hosting pushes and merges to `main` with GitHub Actions.  
+[Have fun!](https://pirate-island-pixijs.firebaseapp.com/)
 
 ## Known Issues
 Until I setup a GitHub Action to ![Create an .env file](https://github.com/marketplace/actions/create-env-file), you will need to setup a Firebase config yourself.  (Not going to commit secrets to GitHub!)  A Firebase API key is required to access the Firestore.  
