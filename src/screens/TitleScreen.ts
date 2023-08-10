@@ -4,8 +4,8 @@ import { Container, Rectangle, Text, Texture, TilingSprite } from 'pixi.js';
 import { designConfig } from '../game/designConfig';
 import { AppScreen, navigation } from '../navigation';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
-import { GameScreen } from './GameScreen';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
+import { GameScreen } from './GameScreen';
 
 /** The screen presented at the start, after loading. */
 export class TitleScreen extends Container implements AppScreen {
@@ -124,12 +124,15 @@ export class TitleScreen extends Container implements AppScreen {
 
     this._scoreboardBtn = new SecondaryButton({
       text: 'High Scores!',
-      tint: 0x49c8ff
-    })
+      tint: 0x49c8ff,
+    });
     this._scoreboardBtn.onPress.connect(() => {
-      const url = import.meta.url.match(/(localhost)/) ? 'http://localhost:3000' : 'https://pirate-island-28a0e.firebaseapp.com/';
+      const url = import.meta.url.match(/(localhost)/)
+        ? 'http://localhost:3000'
+        : 'https://pirate-island-28a0e.firebaseapp.com/';
+
       window.open(url);
-    })
+    });
 
     this._topAnimContainer.addChild(this._title);
     this._midAnimContainer.addChild(this._playBtn);

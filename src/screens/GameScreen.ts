@@ -3,7 +3,9 @@ import { Container, Texture, TilingSprite } from 'pixi.js';
 
 import { designConfig } from '../game/designConfig';
 import { Game } from '../game/Game';
+import { TimerSystem } from '../game/systems/TimerSystem';
 import type { AppScreen } from '../navigation';
+import { GameTimer } from '../ui/GameTimer';
 
 /** The screen that contains all the gameplay */
 export class GameScreen extends Container implements AppScreen {
@@ -11,6 +13,8 @@ export class GameScreen extends Container implements AppScreen {
   public static SCREEN_ID = 'game';
   /** An array of bundle IDs for dynamic asset loading. */
   public static assetBundles = ['images/game-screen'];
+
+  public readonly timer: GameTimer;
 
   private readonly _background: TilingSprite;
   private readonly _game: Game;
@@ -21,12 +25,14 @@ export class GameScreen extends Container implements AppScreen {
     // Create the background
     this._background = new TilingSprite(Texture.from('bg1'), 1920, 1080);
     this._background.tileScale.set(designConfig.backgroundTileScale);
-
     this.addChild(this._background);
 
     this._game = new Game();
     this._game.init();
     this.addChild(this._game.stage);
+
+    this.timer = new GameTimer();
+    this.addChild(this.timer);
   }
 
   public async show() {
@@ -47,6 +53,11 @@ export class GameScreen extends Container implements AppScreen {
 
   public update(delta: number) {
     this._game.update(delta);
+    const remaining = this._game.systems.get(TimerSystem).getTimeRemaining();
+
+    if (remaining >= 0) {
+      this.timer.updateTime(remaining);
+    }
   }
 
   public resize(w: number, h: number) {
@@ -54,5 +65,8 @@ export class GameScreen extends Container implements AppScreen {
     this._background.height = h;
 
     this._game.resize(w, h);
+
+    this.timer.x = 10;
+    this.timer.y = 10;
   }
 }

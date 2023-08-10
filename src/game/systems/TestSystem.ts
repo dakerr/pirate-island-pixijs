@@ -38,11 +38,11 @@ export class TestSystem implements System {
 
   public update() {
     if (this._right) {
-      gsap.to(this.boatContainer, {rotation: -0.1, ease: 'linear', duration: 0.1});
+      gsap.to(this.boatContainer, { rotation: -0.1, ease: 'linear', duration: 0.1 });
       this.boatContainer.x += 5;
     }
     if (this._left) {
-      gsap.to(this.boatContainer, {rotation: 0.1, ease: 'linear', duration: 0.1});
+      gsap.to(this.boatContainer, { rotation: 0.1, ease: 'linear', duration: 0.1 });
       this.boatContainer.x -= 5;
     }
   }

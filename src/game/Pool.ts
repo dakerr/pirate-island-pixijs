@@ -45,7 +45,7 @@ class PoolManager {
    * @param Ctor The constructor for the type of instance to retrieve.
    * @returns An instance of the specified type.
    */
-  public get<T extends new () => InstanceType<T>>(Ctor: T): InstanceType<T> {
+  public get<T extends new() => InstanceType<T>>(Ctor: T): InstanceType<T> {
     // Check if there is an InstancePool for this constructor
     let pool = this.map.get(Ctor);
 

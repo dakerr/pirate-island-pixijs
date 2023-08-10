@@ -8,13 +8,12 @@ import { HudSystem } from './HudSystem';
 
 /** A system that handles the boat interactions in the game. */
 export class BoatSystem implements System {
-
   /**
    * A unique identifier used by the system runner.
    * The identifier is used by the runner to differentiate between different systems.
    */
   public static SYSTEM_ID = 'boat';
-  
+
   /**
    * The instance of the game the system is attached to.
    * This is automatically set by the system runner when the system is added to the game.
@@ -24,7 +23,7 @@ export class BoatSystem implements System {
   public view = new Container();
   /** The game's main boat instance. */
   public boat!: Boat;
-  
+
   /** A set of signals that other systems can access. */
   public signals = {
     onBoatMove: new Signal<(isFirst: boolean) => void>(),

@@ -26,7 +26,8 @@ export class FobSystem implements System {
   private _dropper = new Container();
   private _player!: Container;
 
-  private _e1: Sprite = new Sprite(Texture.from('e1'));  private _updateCount = 0;
+  private _e1: Sprite = new Sprite(Texture.from('e1'));
+  private _updateCount = 0;
 
   private _movingRight = true;
   private _fobEntities: FallingObject[] = [];
@@ -41,7 +42,7 @@ export class FobSystem implements System {
   }
 
   public awake() {
-    this._dropper.position = {x: 0, y: -200};
+    this._dropper.position = { x: 0, y: -200 };
     this._dropper.visible = false;
   }
 
@@ -65,7 +66,7 @@ export class FobSystem implements System {
 
   private _updateDropper() {
     const pos = this._dropper.getGlobalPosition();
-    
+
     if (pos.x < 0 || pos.x > this._width) {
       this._movingRight = !this._movingRight;
     }
@@ -83,7 +84,7 @@ export class FobSystem implements System {
       this._updateCount = 0;
     }
 
-    this._fobEntities.forEach(item => item.updatePositionY());
+    this._fobEntities.forEach((item) => item.updatePositionY());
 
     // randomly create falling objects
     const drop = this._randoArray[~~(Math.random() * this._randoArray.length)];
@@ -106,7 +107,7 @@ export class FobSystem implements System {
   }
 
   private _removeAllFobs() {
-    this._fobEntities.forEach(item => {
+    this._fobEntities.forEach((item) => {
       item.view.removeFromParent();
       pool.return(item);
     });
@@ -114,7 +115,7 @@ export class FobSystem implements System {
   }
 
   private _testForCollision() {
-    const lowEntities = this._fobEntities.filter(x => x.view.y > this._height - 200);
+    const lowEntities = this._fobEntities.filter((x) => x.view.y > this._height - 200);
 
     lowEntities.forEach((item, index) => {
       if (this._collision(this._player, item.view)) {
@@ -137,10 +138,12 @@ export class FobSystem implements System {
     const bounds1 = player.getBounds();
     const bounds2 = object.getBounds();
 
-    return bounds1.x < bounds2.x + bounds2.width
-        && bounds1.x + bounds1.width > bounds2.x
-        && bounds1.y < bounds2.y + bounds2.height
-        && bounds1.y + bounds1.height > bounds2.y;
+    return (
+      bounds1.x < bounds2.x + bounds2.width &&
+      bounds1.x + bounds1.width > bounds2.x &&
+      bounds1.y < bounds2.y + bounds2.height &&
+      bounds1.y + bounds1.height > bounds2.y
+    );
   }
 
   private _createFallingObject() {
@@ -148,7 +151,7 @@ export class FobSystem implements System {
     if (this._fobEntities.length < MAX_FALLING_OBJECT) {
       const dropperPos = this._dropper.getGlobalPosition();
       const fob = pool.get(FallingObject);
-      
+
       fob.init(dropperPos.x, dropperPos.y);
       this._fobEntities.push(fob);
 

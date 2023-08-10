@@ -5,19 +5,19 @@ import { app } from './main';
 
 /** Interface for app screens */
 export interface AppScreen<T = any> extends Container {
-    prepare?: (data?: T) => void;
-    show?: () => Promise<void>;
-    hide?: () => Promise<void>;
-    update?: (delta: number) => void;
-    resize?: (w: number, h: number) => void;
+  prepare?: (data?: T) => void;
+  show?: () => Promise<void>;
+  hide?: () => Promise<void>;
+  update?: (delta: number) => void;
+  resize?: (w: number, h: number) => void;
 }
 
 /** Interface for app screens constructors */
 interface AppScreenConstructor {
-    /** A unique identifier for the screen */
-    readonly SCREEN_ID: string;
-    readonly assetBundles?: string[];
-    new (): AppScreen;
+  /** A unique identifier for the screen */
+  readonly SCREEN_ID: string;
+  readonly assetBundles?: string[];
+  new (): AppScreen;
 }
 
 /** A class to handle screen and overlay navigation */
@@ -54,18 +54,18 @@ class Navigation {
   }
 
   /**
-     * Set the default load screen.
-     * @param Ctor - The constructor for the load screen.
-     * */
+   * Set the default load screen.
+   * @param Ctor - The constructor for the load screen.
+   * */
   public setLoadScreen(Ctor: AppScreenConstructor) {
     this.loadScreen = this._getScreen(Ctor);
   }
 
   /**
-     * Shows an overlay screen overtop of the current screen.
-     * @param Ctor - The constructor for the overlay screen.
-     * @param data - Data that is to be sent to the overlay.
-     */
+   * Shows an overlay screen overtop of the current screen.
+   * @param Ctor - The constructor for the overlay screen.
+   * @param data - Data that is to be sent to the overlay.
+   */
   public async showOverlay<T>(Ctor: AppScreenConstructor, data?: T) {
     // Shows a screen but designates it as an overlay
     // So it is shown above the current screen instead of replaces it
@@ -73,11 +73,11 @@ class Navigation {
   }
 
   /**
-     * Hide current screen (if there is one) and present a new screen.
-     * Any class that matches AppScreen interface can be used here.
-     * @param Ctor - The constructor for the screen.
-     * @param data - Data that is to be sent to the screen.
-     */
+   * Hide current screen (if there is one) and present a new screen.
+   * Any class that matches AppScreen interface can be used here.
+   * @param Ctor - The constructor for the screen.
+   * @param data - Data that is to be sent to the screen.
+   */
   public async goToScreen<T>(Ctor: AppScreenConstructor, data?: T) {
     // Shows a screen but does not designate it as an overlay
     // So it replaces the current screen
@@ -92,10 +92,10 @@ class Navigation {
   }
 
   /**
-     * Gets a screen instance from the screen map.
-     * @param Ctor The constructor for the screen.
-     * @returns The instance of the screen being requested.
-     */
+   * Gets a screen instance from the screen map.
+   * @param Ctor The constructor for the screen.
+   * @returns The instance of the screen being requested.
+   */
   private _getScreen(Ctor: AppScreenConstructor) {
     // Checks if a screen instance exists on the screen map
     let screen = this._screenMap.get(Ctor.SCREEN_ID);
@@ -110,10 +110,10 @@ class Navigation {
   }
 
   /**
-     * Add screen to the stage, link update & resize functions.
-     * @param screen - The screen instance being added.
-     * @param isOverlay - A flag to determine if the screen is an overlay.
-     */
+   * Add screen to the stage, link update & resize functions.
+   * @param screen - The screen instance being added.
+   * @param isOverlay - A flag to determine if the screen is an overlay.
+   */
   private async _addScreen(screen: AppScreen, isOverlay = false) {
     // Add screen to stage
     (isOverlay ? this.overlayView : this.screenView).addChild(screen);
@@ -144,10 +144,10 @@ class Navigation {
   }
 
   /**
-     * Remove screen from the stage, unlink update & resize functions.
-     * @param screen - The screen instance being added.
-     * @param isOverlay - A flag to determine if the screen is an overlay.
-     */
+   * Remove screen from the stage, unlink update & resize functions.
+   * @param screen - The screen instance being added.
+   * @param isOverlay - A flag to determine if the screen is an overlay.
+   */
   private async _removeScreen(screen: AppScreen, isOverlay = false) {
     // Hide screen if method is available
     if (screen.hide) {
@@ -156,11 +156,9 @@ class Navigation {
 
     // Unlink resize handler if exists
     if (isOverlay) {
-      this.currentOverlayResize &&
-                window.removeEventListener('resize', this.currentOverlayResize);
+      this.currentOverlayResize && window.removeEventListener('resize', this.currentOverlayResize);
     } else {
-      this.currentScreenResize &&
-                window.removeEventListener('resize', this.currentScreenResize);
+      this.currentScreenResize && window.removeEventListener('resize', this.currentScreenResize);
     }
 
     // Unlink update function if method is available
@@ -175,11 +173,11 @@ class Navigation {
   }
 
   /**
-     * Hide current screen (if there is one), load bundles and present a new screen.
-     * @param Ctor - The screen instance being added.
-     * @param isOverlay - A flag to determine if the screen is an overlay.
-     * @param data- Data to be sent to the screen.
-     */
+   * Hide current screen (if there is one), load bundles and present a new screen.
+   * @param Ctor - The screen instance being added.
+   * @param isOverlay - A flag to determine if the screen is an overlay.
+   * @param data- Data to be sent to the screen.
+   */
   private async _showScreen<T>(Ctor: AppScreenConstructor, isOverlay: boolean, data: T) {
     const current = isOverlay ? this.currentOverlay : this.currentScreen;
 
@@ -217,11 +215,11 @@ class Navigation {
   }
 
   /**
-     * Gets called every time the screen resizes.
-     * Forwards the screen width and height to the current screen and overlay.
-     * @param w - width of the screen.
-     * @param h - height of the screen.
-     */
+   * Gets called every time the screen resizes.
+   * Forwards the screen width and height to the current screen and overlay.
+   * @param w - width of the screen.
+   * @param h - height of the screen.
+   */
   public resize(w: number, h: number) {
     this._w = w;
     this._h = h;

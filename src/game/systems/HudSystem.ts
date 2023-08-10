@@ -1,4 +1,4 @@
-import { Container, Graphics, NineSlicePlane, Texture} from 'pixi.js';
+import { Container, Graphics, NineSlicePlane, Texture } from 'pixi.js';
 
 import { designConfig } from '../designConfig';
 import { Game } from '../Game';
@@ -40,17 +40,16 @@ export class HudSystem implements System {
 
     // right test
 
+    this._mask = new Graphics()
+      .beginFill(0xff0320)
+      .drawRect(
+        -designConfig.content.width * 0.5,
+        -designConfig.content.height,
+        designConfig.content.width,
+        designConfig.content.height,
+      );
 
-    this._mask = new Graphics().beginFill(0xff0320).drawRect(
-      -designConfig.content.width * 0.5,
-      -designConfig.content.height,
-      designConfig.content.width,
-      designConfig.content.height,
-    );
-
-    this._gameHudContainer.addChild(
-      this.boatContainer,
-    );
+    this._gameHudContainer.addChild(this.boatContainer);
 
     // Designate the mask to the game hud
     this._gameHudContainer.mask = this._mask;
@@ -74,6 +73,5 @@ export class HudSystem implements System {
     // Set the left visual wall to the left boundary
     this._leftBorder.y = -h;
     this._leftBorder.height = h;
-    
   }
 }

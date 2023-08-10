@@ -7,28 +7,26 @@ import { Text } from 'pixi.js';
  * Options for the primary button.
  */
 export interface PrimaryButtonOptions {
-    /** The text displayed on the button. */
-    text: string;
-    /** Style properties for the text displayed on the button. */
-    textStyle?: Partial<TextStyle>;
-    /** Options for the underlying button component. */
-    buttonOptions?: ButtonOptions;
+  /** The text displayed on the button. */
+  text: string;
+  /** Style properties for the text displayed on the button. */
+  textStyle?: Partial<TextStyle>;
+  /** Options for the underlying button component. */
+  buttonOptions?: ButtonOptions;
 }
 
 /** Constant to define the default scale of the button */
 const DEFAULT_SCALE = 0.6;
 
 export class PrimaryButton extends FancyButton {
-
   /**
    * @param options - Options for the primary button.
    */
   constructor(options: PrimaryButtonOptions) {
-
     // Create text object to act as label
     const text = new Text(options?.text ?? '', {
       // Predefine text styles that can be overwritten
-      fill: 0x49C8FF,
+      fill: 0x49c8ff,
       fontFamily: 'PirateJack lglRX',
       fontWeight: 'normal',
       align: 'center',
@@ -61,8 +59,5 @@ export class PrimaryButton extends FancyButton {
       // Allow custom button options to overwrite predefined options
       ...options.buttonOptions,
     });
-
   }
-
-
 }

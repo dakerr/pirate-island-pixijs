@@ -13,7 +13,7 @@ import manifest from '../src/manifest.json';
 export const resolveJsonUrl = {
   extension: ExtensionType.ResolveParser,
   test: (value: string): boolean =>
-  // @ts-expect-error should be fixed in the next version of pixi (RETINA_PREFIX is of type RegEx)
+    // @ts-expect-error should be fixed in the next version of pixi (RETINA_PREFIX is of type RegEx)
     settings.RETINA_PREFIX.test(value) && value.endsWith('.json'),
   parse: resolveTextureUrl.parse,
 } as ResolveURLParser;
@@ -36,10 +36,10 @@ export async function initAssets() {
 }
 
 /**
-* Check to see if a bundle has loaded
-* @param bundle - The unique id of the bundle
-* @returns Whether or not the bundle has been loaded
-*/
+ * Check to see if a bundle has loaded
+ * @param bundle - The unique id of the bundle
+ * @returns Whether or not the bundle has been loaded
+ */
 export function isBundleLoaded(bundle: string) {
   const bundleManifest = manifest.bundles.find((b) => b.name === bundle);
 

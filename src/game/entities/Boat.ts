@@ -4,7 +4,7 @@ import { Container, Sprite } from 'pixi.js';
 export class Boat {
   /** The Container instance which contains all the visual elements for this class. */
   public view = new Container();
-  
+
   /** Holds the references to the various cannon parts as Sprite objects. */
   private _parts: Record<string, Sprite> = {};
 
@@ -12,7 +12,7 @@ export class Boat {
     // Use a helper function to simplify building the boat
     this._build();
   }
-  
+
   /**
    * Helper function to build the boat. For future use.
    */
@@ -30,6 +30,4 @@ export class Boat {
     // Call the create function with ids of the boat parts.  (For Future)
     create('boat');
   }
-
 }
- 

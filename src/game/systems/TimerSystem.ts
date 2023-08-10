@@ -16,14 +16,14 @@ export class TimerSystem implements System {
   public game!: Game;
   /* The container instance that is the root of all visuals in this class. */
   public view = new Container();
-  
+
   private _time = 0;
   private _paused = false;
   private _running = false;
   private _duration = 60 * 60;
 
   public init() {
-    // setup timer text
+    this._time = 0;
   }
 
   public awake() {
@@ -40,6 +40,10 @@ export class TimerSystem implements System {
     }
   }
 
+  public getTimeRemaining() {
+    return 60 * 60 - this._time;
+  }
+
   public start() {
     this._running = true;
     this._paused = false;
@@ -50,5 +54,4 @@ export class TimerSystem implements System {
     this._running = false;
     this._paused = false;
   }
-
 }
