@@ -1,22 +1,29 @@
 import gsap from 'gsap';
-import { Container } from 'pixi.js';
+import { Container, Sprite } from 'pixi.js';
 
 import { Boat } from '../entities/Boat';
 import { Game } from '../Game';
 import { System } from '../SystemRunner';
+import { designConfig } from '../designConfig';
 
-export class TestSystem implements System {
-  public static SYSTEM_ID = 'test';
+export class HudSystem implements System {
+  public static SYSTEM_ID = 'hud';
 
   public game!: Game;
   public view = new Container();
+
   public readonly boatContainer = new Container();
   public boat!: Boat;
 
   private _left = false;
   private _right = false;
 
+  // The container instance that will hold all the game hud.
+  private readonly _gameHudContainer = new Container();
+  private _background!: Sprite;
+
   public init() {
+    this.view.addChild(this._gameHudContainer);
     this.game.stage.addChild(this.view);
 
     this.boat = new Boat();
@@ -24,11 +31,19 @@ export class TestSystem implements System {
 
     this.boatContainer.addChild(this.boat.view);
     this.view.addChild(this.boatContainer);
+
+    this._background = Sprite.from('bg1');
+
+    this._gameHudContainer.addChild(
+      this._background,
+    );
   }
 
   public awake() {
     window.addEventListener('keydown', this._onKeyDown.bind(this));
     window.addEventListener('keyup', this._onKeyUp.bind(this));
+
+    this._gameHudContainer.visible = true;
   }
 
   public end() {
@@ -50,6 +65,12 @@ export class TestSystem implements System {
   public resize(w: number, h: number) {
     this.view.x = w * 0.5;
     this.view.y = h - 120;
+
+    this._background.x = (w <= designConfig.content.width) ? -1920 * 0.5 : -w * 0.5;
+    this._background.y = -h;
+
+    this._background.width = (w <= designConfig.content.width) ? 1920 : w;
+    this._background.height = h + 120;
   }
 
   private _onKeyDown(evt: KeyboardEvent) {

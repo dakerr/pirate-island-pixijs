@@ -35,7 +35,7 @@ export class ResultScreen extends Container implements AppScreen {
     super();
 
     // Create the background
-    this._background = new TilingSprite(Texture.from('bg2'), 64, 64);
+    this._background = new TilingSprite(Texture.from('s2_wood_painted_blue'), 256, 256);
     this._background.tileScale.set(designConfig.backgroundTileScale);
     this._background.interactive = true;
     this.addChild(this._background);
@@ -98,7 +98,7 @@ export class ResultScreen extends Container implements AppScreen {
     this._resultsView.y = h * 0.4;
 
     this._inputLabel.x = w * 0.5;
-    this._inputLabel.y = h * 0.5 - 10;
+    this._inputLabel.y = h * 0.5 - 50;
 
     this._playerInput.x = w * 0.5;
     this._playerInput.y = this._resultsView.y + 150;

@@ -25,7 +25,7 @@ export class GameScreen extends Container implements AppScreen {
     super();
 
     // Create the background
-    this._background = new TilingSprite(Texture.from('bg1'), 1920, 1080);
+    this._background = new TilingSprite(Texture.from('s2_water_blue'), 256, 256);
     this._background.tileScale.set(designConfig.backgroundTileScale);
     this.addChild(this._background);
 

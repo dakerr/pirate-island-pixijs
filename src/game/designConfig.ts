@@ -1,5 +1,5 @@
 /** Minimum screen width before the resizing function shrinks the view. */
-const minWidth = 428;
+const minWidth = 768;
 /** Minimum screen height before the resizing function shrinks the view. */
 const minHeight = 925;
 
