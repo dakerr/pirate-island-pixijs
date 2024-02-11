@@ -1,4 +1,4 @@
-import { Application, Assets } from 'pixi.js';
+import { Application, Assets, utils } from 'pixi.js';
 
 import { initAssets } from './assets';
 import { designConfig } from './game/designConfig';
@@ -54,6 +54,7 @@ async function init() {
 
   // Assign the universal loading screen
   navigation.setLoadScreen(LoadScreen);
+  console.log(`mobile: ${utils.isMobile.phone}`);
 
   // Show first screen - go straight to game if '?play' param is present in url
   // This is used for debugging

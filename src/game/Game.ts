@@ -73,8 +73,6 @@ export class Game {
 
   /** Initialisation point of the Game, used to add systems to the game. */
   public init() {
-    // this.systems.add(HudSystem);
-    // this.systems.add(BoatSystem);
     this.systems.add(HudSystem);
     this.systems.add(TimerSystem);
     this.systems.add(FobSystem);
