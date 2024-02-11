@@ -9,10 +9,8 @@ import { boardConfig } from './boardConfig';
 import { Stats } from './Stats';
 import { SystemRunner } from './SystemRunner';
 import { FobSystem } from './systems/FobSystem';
-import { TestSystem } from './systems/HudSystem';
+import { HudSystem } from './systems/HudSystem';
 import { TimerSystem } from './systems/TimerSystem';
-// import { BoatSystem } from './systems/BoatSystem';
-// import { HudSystem } from './systems/HudSystem';
 
 /** A class that handles all of gameplay based features. */
 export class Game {
@@ -77,7 +75,7 @@ export class Game {
   public init() {
     // this.systems.add(HudSystem);
     // this.systems.add(BoatSystem);
-    this.systems.add(TestSystem);
+    this.systems.add(HudSystem);
     this.systems.add(TimerSystem);
     this.systems.add(FobSystem);
 

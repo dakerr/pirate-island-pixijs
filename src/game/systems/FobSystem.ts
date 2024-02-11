@@ -4,7 +4,7 @@ import { FallingObject, MAX_FALLING_OBJECT } from '../entities/FallingObject';
 import { Game } from '../Game';
 import { pool } from '../Pool';
 import { System } from '../SystemRunner';
-import { TestSystem } from './HudSystem';
+import { HudSystem } from './HudSystem';
 
 export class FobSystem implements System {
   /**
@@ -38,7 +38,7 @@ export class FobSystem implements System {
     this._e1.scale.set(0.25);
     this._dropper.addChild(this._e1);
     this.view.addChild(this._dropper);
-    this._player = this.game.systems.get(TestSystem).boatContainer;
+    this._player = this.game.systems.get(HudSystem).boatContainer;
   }
 
   public awake() {
