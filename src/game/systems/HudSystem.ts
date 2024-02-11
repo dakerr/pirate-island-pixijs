@@ -1,10 +1,14 @@
 import gsap from 'gsap';
-import { Container, Sprite } from 'pixi.js';
+import { Container, Sprite, utils } from 'pixi.js';
 
 import { Boat } from '../entities/Boat';
 import { Game } from '../Game';
 import { System } from '../SystemRunner';
 import { designConfig } from '../designConfig';
+
+interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
+  requestPermission?: () => Promise<'granted' | 'denied'>;
+}
 
 export class HudSystem implements System {
   public static SYSTEM_ID = 'hud';
@@ -39,9 +43,21 @@ export class HudSystem implements System {
     );
   }
 
-  public awake() {
+  public async awake() {
+    const requestPermission = (DeviceOrientationEvent as unknown as DeviceOrientationEventiOS).requestPermission;
+    const iOS = typeof requestPermission === 'function';
+    if (iOS) {
+        const response = await requestPermission();
+        if (response === 'granted') {
+          console.log(`granted!`);
+        }
+    }
+
     window.addEventListener('keydown', this._onKeyDown.bind(this));
     window.addEventListener('keyup', this._onKeyUp.bind(this));
+    if (utils.isMobile.phone) {
+      window.addEventListener('devicemotion', this._onDeviceMotion.bind(this));
+    }
 
     this._gameHudContainer.visible = true;
   }
@@ -49,6 +65,9 @@ export class HudSystem implements System {
   public end() {
     window.removeEventListener('keydown', this._onKeyDown.bind(this));
     window.removeEventListener('keyup', this._onKeyUp.bind(this));
+    if (utils.isMobile.phone) {
+      window.removeEventListener('devicemotion', this._onDeviceMotion.bind(this));
+    }
   }
 
   public update() {
@@ -88,6 +107,24 @@ export class HudSystem implements System {
     }
     if (evt.key === 'ArrowLeft') {
       this._left = false;
+    }
+  }
+
+  private _onDeviceMotion(event: DeviceMotionEvent) {
+    let xMotion = event.accelerationIncludingGravity && event.accelerationIncludingGravity.x || 0;
+    switch (screen.orientation.type) {
+      case "portrait-primary":
+        if (xMotion < -1) {
+          this._left = true;
+          this._right = false;
+        } else if (xMotion > 1) {
+          this._left = false;
+          this._right = true;
+        } else {
+          this._left = false;
+          this._right = false;
+        }
+        break;
     }
   }
 }
