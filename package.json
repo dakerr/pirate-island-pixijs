@@ -18,11 +18,14 @@
   "dependencies": {
     "@pixi/sound": "^5.0.0",
     "@pixi/ui": "^0.5.6",
+    "@types/lodash": "^4.14.202",
     "firebase": "^10.1.0",
     "gsap": "^3.11.4",
+    "lodash": "^4.17.21",
     "pixi-filters": "^5.1.1",
     "pixi-text-input": "^1.0.6",
     "pixi.js": "^7.1.2",
+    "throttle-asynchronous": "^2.0.1",
     "typed-signals": "^2.5.0"
   },
   "devDependencies": {

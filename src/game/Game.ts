@@ -1,8 +1,9 @@
 import gsap from 'gsap';
 import type { DisplayObject } from 'pixi.js';
 import { Container, Rectangle } from 'pixi.js';
+import { throttle } from 'lodash';
 
-import { authenticateAnonymously, FirestoreConfig } from '../firestore';
+import { authenticateAnonymously, FirestoreConfig, addScoreboardItem } from '../firestore';
 import { navigation } from '../navigation';
 import { ResultScreen } from '../screens/ResultScreen';
 import { boardConfig } from './boardConfig';
@@ -11,6 +12,7 @@ import { SystemRunner } from './SystemRunner';
 import { FobSystem } from './systems/FobSystem';
 import { HudSystem } from './systems/HudSystem';
 import { TimerSystem } from './systems/TimerSystem';
+import { updateDoc } from 'firebase/firestore';
 
 /** A class that handles all of gameplay based features. */
 export class Game {
@@ -35,6 +37,10 @@ export class Game {
   /** The hit area to be used by the `hitContainer`. */
   private readonly _hitArea: Rectangle;
 
+  private _throttledFn: any;
+  private _scoreRef: any = null;
+  private _playerName!: string;
+
   constructor() {
     this.stage.addChild(this.gameContainer);
 
@@ -49,6 +55,8 @@ export class Game {
     this.systems = new SystemRunner(this);
 
     this.stats = new Stats();
+
+    this._throttledFn = throttle(async () => { this.sendScore() }, 1000);
   }
 
   /**
@@ -96,7 +104,9 @@ export class Game {
   }
 
   /** Starts the game logic. */
-  public async start() {
+  public async start(name: string) {
+    console.log(`game start: ${name}`)
+    this._playerName = name;
     this.systems.start();
   }
 
@@ -130,6 +140,7 @@ export class Game {
   public update(delta: number) {
     if (this.isGameOver) return;
     this.systems.update(delta);
+    this._throttledFn();
   }
 
   /** Resets the game to its initial state. */
@@ -156,5 +167,25 @@ export class Game {
     this._hitArea.height = h - boardConfig.floatLine * 0.75;
 
     this.systems.resize(w, h);
+  }
+
+  private async sendScore() {
+    const score = this.stats.get('score');
+    if (this._scoreRef === null) {
+      console.log(`add score: ${score}`);
+      this._scoreRef = await addScoreboardItem(
+        {
+          name: this._playerName,
+          score: score,
+        },
+        this.firestoreConfig.docRef,
+        this.firestoreConfig.userId
+      )
+    } else {
+      console.log(`update score: ${score}`);
+      await updateDoc(this._scoreRef, {
+        score: score
+      })
+    } 
   }
 }
