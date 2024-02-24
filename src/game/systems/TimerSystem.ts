@@ -20,7 +20,7 @@ export class TimerSystem implements System {
   private _time = 0;
   private _paused = false;
   private _running = false;
-  private _duration = 60 * 60;
+  private _duration = 10 * 60;
 
   public init() {
     this._time = 0;
@@ -41,7 +41,7 @@ export class TimerSystem implements System {
   }
 
   public getTimeRemaining() {
-    return 60 * 60 - this._time;
+    return 10 * 60 - this._time;
   }
 
   public start() {

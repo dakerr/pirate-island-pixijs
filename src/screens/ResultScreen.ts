@@ -1,8 +1,7 @@
-import { Input } from '@pixi/ui';
 import gsap from 'gsap';
-import { Container, Sprite, Text, Texture, TilingSprite } from 'pixi.js';
+import { Container, Text, Texture, TilingSprite } from 'pixi.js';
 
-import { addScoreboardItem, FirestoreConfig } from '../firestore';
+import { FirestoreConfig } from '../firestore';
 import { designConfig } from '../game/designConfig';
 import { AppScreen, navigation } from '../navigation';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
@@ -15,7 +14,6 @@ export interface ResultsData {
   config: FirestoreConfig;
 }
 
-const INPUT_PROMPT = 'Add your name to the scoreboard!';
 
 export class ResultScreen extends Container implements AppScreen {
   /** A unique identifier for the screen. */
@@ -25,8 +23,6 @@ export class ResultScreen extends Container implements AppScreen {
 
   private _background: TilingSprite;
   private _playBtn!: PrimaryButton;
-  private _playerInput!: Input;
-  private _inputLabel!: Text;
   private _resultsView: Container = new Container();
   private _scoreText!: Text;
   private _results!: ResultsData;
@@ -42,10 +38,8 @@ export class ResultScreen extends Container implements AppScreen {
 
     this._clearResults();
 
-    this._buildInputLabel();
     this._buildButtons();
 
-    this._buildInput();
   }
 
   /**
@@ -67,10 +61,6 @@ export class ResultScreen extends Container implements AppScreen {
     // Tween screen into being visible
     await gsap.to(this, { alpha: 1, duration: 0.2, ease: 'linear' });
 
-    // this was hidden after accepting input
-    this._playerInput.visible = true;
-    this._playerInput.interactive = true;
-    this._inputLabel.text = INPUT_PROMPT;
   }
 
   /** Called when the screen is being hidden. */
@@ -97,14 +87,8 @@ export class ResultScreen extends Container implements AppScreen {
     this._resultsView.x = w * 0.5;
     this._resultsView.y = h * 0.4;
 
-    this._inputLabel.x = w * 0.5;
-    this._inputLabel.y = h * 0.5 - 50;
-
-    this._playerInput.x = w * 0.5;
-    this._playerInput.y = this._resultsView.y + 150;
-
     this._playBtn.x = w * 0.5;
-    this._playBtn.y = this._playerInput.y + this._resultsView.height + 150;
+    this._playBtn.y = this._resultsView.height + 150;
   }
 
   private _updateResultsData(data: ResultsData) {
@@ -154,53 +138,4 @@ export class ResultScreen extends Container implements AppScreen {
     this.addChild(this._playBtn);
   }
 
-  private _buildInputLabel() {
-    const label = INPUT_PROMPT;
-
-    this._inputLabel = new Text(label, {
-      fontFamily: 'PirateJack lglRX',
-      fontSize: 30,
-      align: 'center',
-      fill: 'white',
-    });
-    this._inputLabel.anchor.set(0.5);
-    this.addChild(this._inputLabel);
-  }
-
-  private _buildInput() {
-    const bg = Sprite.from('info-bg');
-
-    this._playerInput = new Input({
-      bg,
-      placeholder: 'Enter name',
-      textStyle: {
-        fill: 0x49c8ff,
-        fontFamily: 'PirateJack lglRX',
-        fontWeight: 'normal',
-      },
-      padding: 0,
-      align: 'center',
-    });
-    this._playerInput.pivot.x = this._playerInput.width / 2;
-    this._playerInput.pivot.y = this._playerInput.height / 2;
-    this._playerInput.scale.set(1.5);
-    this._playerInput.onEnter.connect((val) => {
-      if (this._results.config.userId && val.length > 0) {
-        addScoreboardItem(
-          {
-            name: val,
-            score: this._results.score,
-          },
-          this._results.config.docRef,
-          this._results.config.userId,
-        );
-        // clear the name before the next game
-        this._playerInput.value = '';
-        this._playerInput.visible = false;
-        this._playerInput.interactive = false;
-        this._inputLabel.text = 'Thank-you!';
-      }
-    });
-    this.addChild(this._playerInput);
-  }
 }

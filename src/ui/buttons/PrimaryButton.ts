@@ -13,10 +13,14 @@ export interface PrimaryButtonOptions {
   textStyle?: Partial<TextStyle>;
   /** Options for the underlying button component. */
   buttonOptions?: ButtonOptions;
+
+  enabled?: boolean;
+
+  scale?: number;
 }
 
 /** Constant to define the default scale of the button */
-const DEFAULT_SCALE = 0.6;
+const DEFAULT_SCALE = 0.3;
 
 export class PrimaryButton extends FancyButton {
   /**
@@ -40,6 +44,8 @@ export class PrimaryButton extends FancyButton {
       defaultView: 'play-btn-up',
       // Assign the pressed view
       pressedView: 'play-btn-down',
+      // Assign the disabled view
+      disabledView: 'play-btn-disabled',
       // Assign button text
       text,
       // Offset the button text
@@ -56,6 +62,7 @@ export class PrimaryButton extends FancyButton {
       anchorY: 1,
       // Set initial scale to default scale
       scale: DEFAULT_SCALE,
+      
       // Allow custom button options to overwrite predefined options
       ...options.buttonOptions,
     });

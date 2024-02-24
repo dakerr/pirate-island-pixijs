@@ -8,6 +8,10 @@ import type { AppScreen } from '../navigation';
 import { GameTimer } from '../ui/GameTimer';
 import { GameScore } from '../ui/GameScore';
 
+export interface GameData {
+  name: string;
+}
+
 /** The screen that contains all the gameplay */
 export class GameScreen extends Container implements AppScreen {
   /** A unique identifier for the screen */
@@ -20,6 +24,8 @@ export class GameScreen extends Container implements AppScreen {
 
   private readonly _background: TilingSprite;
   private readonly _game: Game;
+
+  private _gameData!: GameData;
 
   constructor() {
     super();
@@ -40,13 +46,22 @@ export class GameScreen extends Container implements AppScreen {
     this.addChild(this.score);
   }
 
+  public prepare(data: GameData) {
+    if (data) {
+      this._gameData = {
+        name: data.name
+      };
+      console.log(`gamescreen: ${data.name} data: ${this._gameData}`)
+    }
+  }
+
   public async show() {
     gsap.killTweensOf(this);
     this.alpha = 0;
 
     this._game.awake();
     await gsap.to(this, { alpha: 1, duration: 0.2, ease: 'linear' });
-    this._game.start();
+    this._game.start(this._gameData.name);
   }
 
   public async hide() {

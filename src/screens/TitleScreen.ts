@@ -3,9 +3,9 @@ import { Container, Rectangle, Text, Texture, TilingSprite } from 'pixi.js';
 
 import { designConfig } from '../game/designConfig';
 import { AppScreen, navigation } from '../navigation';
-import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { GameScreen } from './GameScreen';
+import { NameInput } from '../ui/NameInput';
 
 /** The screen presented at the start, after loading. */
 export class TitleScreen extends Container implements AppScreen {
@@ -21,17 +21,20 @@ export class TitleScreen extends Container implements AppScreen {
   /** A background visual element */
   private readonly _background: TilingSprite;
 
-  private _playBtn!: PrimaryButton;
   /** A text element for the title */
   private _title!: Text;
   /** A button to navigate to highscore board */
   private _scoreboardBtn!: SecondaryButton;
+  /** A text input for the players name */
+  private _nameInputGrp!: NameInput;
 
   private _topAnimContainer = new Container();
   /** A container to group visual elements for easier animation */
   private _midAnimContainer = new Container();
   /** A container to group visual elements for easier animation */
   private _bottomAnimContainer = new Container();
+  /** The player's name */
+  // private _playerName!: string;
 
   constructor() {
     super();
@@ -115,11 +118,19 @@ export class TitleScreen extends Container implements AppScreen {
     });
     this._title.anchor.set(0.5);
 
-    this._playBtn = new PrimaryButton({
-      text: 'Play',
-    });
-    this._playBtn.onPress.connect(() => {
-      navigation.goToScreen(GameScreen);
+    // this._playBtn = new PrimaryButton({
+    //   text: 'Play',
+    // });
+    // this._playBtn.onPress.connect((val) => {
+    //   console.log(val);
+    //   navigation.goToScreen(GameScreen, {
+    //     name: this._playerName
+    //   });
+    // });
+
+    this._nameInputGrp = new NameInput({
+      label: 'Enter your name and press PLAY!',
+      onEnterFn: this.onEnterName,
     });
 
     this._scoreboardBtn = new SecondaryButton({
@@ -135,7 +146,7 @@ export class TitleScreen extends Container implements AppScreen {
     });
 
     this._topAnimContainer.addChild(this._title);
-    this._midAnimContainer.addChild(this._playBtn);
+    this._midAnimContainer.addChild(this._nameInputGrp);
     this._bottomAnimContainer.addChild(this._scoreboardBtn);
   }
 
@@ -152,10 +163,20 @@ export class TitleScreen extends Container implements AppScreen {
     this._title.x = w * 0.5;
     this._title.y = 150;
 
-    this._playBtn.x = w * 0.5;
-    this._playBtn.y = h * 0.5;
+    // this._nameInputGrp.pivot.x = this._nameInputGrp.width;
+    this._nameInputGrp.x = this._title.x;
+    this._nameInputGrp.y = this._title.y + 150;
 
-    this._scoreboardBtn.x = this._playBtn.x;
-    this._scoreboardBtn.y = this._playBtn.y + 200;
+    this._scoreboardBtn.x = w * 0.5;
+    this._scoreboardBtn.y = this._nameInputGrp.y + 325;
+  }
+
+  private onEnterName(name: string) {
+    if (name !== '') {
+      console.log(`titlescreen: ${name}`)
+      navigation.goToScreen(GameScreen, {
+        name,
+      });
+    }
   }
 }
