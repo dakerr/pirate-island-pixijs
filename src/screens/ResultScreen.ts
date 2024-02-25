@@ -47,8 +47,10 @@ export class ResultScreen extends Container implements AppScreen {
    * @param data - An object containing data specific to this screen.
    */
   public prepare(data: ResultsData) {
-    this._buildResultsText(data.score);
-    this._updateResultsData(data);
+    if (data) {
+      this._buildResultsText(data.score);
+      this._updateResultsData(data);
+    }
   }
 
   /** Called when the screen is being shown. */
